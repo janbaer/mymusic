@@ -3,6 +3,7 @@ package logger
 import (
 	"fmt"
 	"os"
+	"path"
 
 	"github.com/janbaer/mp3db/model"
 )
@@ -14,11 +15,17 @@ type UpdateLogWriter interface {
 
 // UpdateLogLogger - implements the interface UpdateLogWriter
 type UpdateLogLogger struct {
+	LogDirPath string
+}
+
+// NewUpdateLogLogger - Creates a new UpdateLogLogger
+func NewUpdateLogLogger(logDirPath string) *UpdateLogLogger {
+	return &UpdateLogLogger{LogDirPath: logDirPath}
 }
 
 // WriteLog - Creates a logfile with stats about the last update
 func (logger UpdateLogLogger) WriteLog(updateStats *model.UpdateStats) error {
-	updateLogFilepath := "./update.log"
+	updateLogFilepath := path.Join(logger.LogDirPath, "update.log")
 	os.Remove(updateLogFilepath)
 
 	file, err := os.Create(updateLogFilepath)

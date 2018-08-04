@@ -3,6 +3,7 @@ package logger
 import (
 	"fmt"
 	"os"
+	"path"
 
 	"github.com/janbaer/mp3db/model"
 )
@@ -14,11 +15,17 @@ type ImportLogWriter interface {
 
 // ImportLogLogger - implements the interface ImportLogWriter
 type ImportLogLogger struct {
+	LogDirPath string
+}
+
+// NewImportLogLogger - Creates a new ImportLogLogger
+func NewImportLogLogger(logDirPath string) *ImportLogLogger {
+	return &ImportLogLogger{LogDirPath: logDirPath}
 }
 
 // WriteLog - Creates a logfile with stats about the last import
 func (logger ImportLogLogger) WriteLog(importStats *model.ImportStats) error {
-	importLogFilepath := "./import.log"
+	importLogFilepath := path.Join(logger.LogDirPath, "import.log")
 	os.Remove(importLogFilepath)
 
 	file, err := os.Create(importLogFilepath)

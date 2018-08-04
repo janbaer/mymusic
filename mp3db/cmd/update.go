@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"path"
 
 	"github.com/janbaer/mp3db/files"
 	"github.com/janbaer/mp3db/logger"
@@ -18,7 +19,10 @@ var updateCmd = &cobra.Command{
 	Long:  ``,
 	Args:  cobra.MinimumNArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
-		database, err := storage.OpenDatabase(viper.GetString("database"))
+		databaseFilePath := viper.GetString("database")
+		dataDirectoryPath := path.Dir(databaseFilePath)
+
+		database, err := storage.OpenDatabase(databaseFilePath)
 		if err != nil {
 			fmt.Printf("Unexpected error while opening the database: %v\n", err)
 			return
@@ -38,7 +42,7 @@ var updateCmd = &cobra.Command{
 			database,
 			new(files.FileSystem),
 			new(files.RealMP3MetadataReader),
-			new(logger.UpdateLogLogger),
+			logger.NewUpdateLogLogger(dataDirectoryPath),
 		)
 
 		updateStats, err := task.Execute(importDir)
