@@ -1,0 +1,5 @@
+version: '1.0'
+
+database: /data/mp3.db
+importDir: /music
+port: 8082

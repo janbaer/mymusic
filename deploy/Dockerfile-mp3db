@@ -1,0 +1,29 @@
+FROM golang:1.10-alpine as build
+
+RUN apk add --no-cache gcc musl-dev
+
+COPY ./mp3db /go/src/github.com/janbaer/mp3db
+WORKDIR /go/src/github.com/janbaer/mp3db
+
+RUN go build -o mp3db main.go
+
+# ----------------
+
+FROM alpine:3.7
+
+RUN apk add --no-cache ca-certificates
+
+RUN mkdir /app
+
+COPY --from=build /go/src/github.com/janbaer/mp3db/mp3db /app
+
+ADD mp3db-config.yml /app/
+
+ENV ENV production
+
+EXPOSE 8082
+
+WORKDIR /app
+
+CMD [ "./mp3db", "serve" ]
+

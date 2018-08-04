@@ -1,0 +1,8 @@
+0.0.0.0:8081 {
+  log /var/log/caddy-acess.log
+  root /app/public
+
+  gzip
+
+  tls off
+}

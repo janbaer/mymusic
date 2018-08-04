@@ -1,0 +1,6 @@
+vendor/
+data/
+bin/
+
+*.log
+Session.vim

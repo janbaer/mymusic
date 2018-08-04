@@ -1,0 +1,41 @@
+@PANEL_COLOR: aquamarine;
+
+.Page {
+  height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 50px 1fr 50px;
+  grid-template-areas: 
+    "toolbar"
+    "content"
+    "footer";
+}
+
+header {
+  grid-area: toolbar;
+  & > nav {
+    background-color: @PANEL_COLOR !important;
+  }
+
+  & h1 {
+    margin-bottom: 0px !important;
+    align-self: center;
+    margin-left: 5px;
+  }
+}
+
+main {
+  grid-area: content;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+footer {
+  grid-area: footer;
+  background-color: @PANEL_COLOR;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+

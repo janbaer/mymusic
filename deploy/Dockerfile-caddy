@@ -1,0 +1,30 @@
+FROM alpine:latest
+
+ENV ENV production
+
+RUN apk --no-cache add tini git openssh-client \
+    && apk --no-cache add --virtual devs tar curl
+
+# Install Caddy Server with required middleware
+RUN curl "https://caddyserver.com/download/linux/amd64?plugins=http.cors,http.minify&license=personal&telemetry=on" \
+    | tar --no-same-owner -C /usr/bin/ -xz caddy
+
+# Remove build devs
+RUN apk del devs
+
+# Copy over a default Caddyfile
+COPY ./Caddyfile /etc/Caddyfile
+
+#USER caddy
+
+ENTRYPOINT ["/sbin/tini"]
+
+RUN mkdir /app /app/public
+
+ADD ./public /app/public/
+
+WORKDIR /app
+
+EXPOSE 8081
+
+CMD ["caddy", "-quic", "--conf", "/etc/Caddyfile"]
