@@ -29,10 +29,6 @@ func NewServeTask(storage storage.Storage, port int) *ServeTask {
 	return &ServeTask{storage, port}
 }
 
-func allowCors(w http.ResponseWriter) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-}
-
 // Execute - Executes the taks and searches for the given search term
 func (task *ServeTask) Execute() error {
 	http.HandleFunc("/songs", func(w http.ResponseWriter, r *http.Request) {
@@ -46,8 +42,6 @@ func (task *ServeTask) Execute() error {
 		} else {
 			songs, _ = task.storage.QueryAll()
 		}
-
-		allowCors(w)
 
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		w.WriteHeader(http.StatusOK)
