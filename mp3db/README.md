@@ -10,11 +10,23 @@ Before you can query the dabase , you have to import the mp3 files.
 The following commands are supported
 
 - import <directory> creates a new database and imports all mp3 files into it
+- update <directory> updates the database with new or changed files from the passed directory
+- cleanup goes through all records in an existing database and checks if the file still exists. If
+  not, the record will be removed
 - search <searchterm> searches for the given searchterm in the following fields: artist, title,
   album. You can specify explicitely the field you want to search with using the field name as flag.
   For example `search --artist Abba`
 - versions Shows you, wich version you've installed on your computer.
 - serve --port=8082 provides a ready to use Rest server for searching songs from a web application
+  The following routes are available:
+  - GET /songs?q=<searchTerm>&artist Searches for all songs that matches the given searchTerm. In no field
+  are passed as filter it will search within **artist**, **title** and **album** fields
+  - GET /songs/%id Return the song by the given id
+  - PUT /songs/%id Writes the songs that was posted in the body to the database and updates also the
+    tags in the underlying mp3 file
+  - DELETE /songs/%id Deletes the song by the given id from the database and as well from the disk
+  - GET /songs/%id/content Returns the content of the song with the given id for streaming on the
+    web client
 
 ## Dependency management
 
