@@ -22,9 +22,10 @@ ENTRYPOINT ["/sbin/tini"]
 RUN mkdir /app /app/public
 
 ADD ./public /app/public/
+ADD ./certificates /app/certificates
 
 WORKDIR /app
 
 EXPOSE 8081
 
-CMD ["caddy", "-quic", "--conf", "/etc/Caddyfile"]
+CMD ["caddy", "--conf", "/etc/Caddyfile"]

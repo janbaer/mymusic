@@ -1,4 +1,7 @@
-const searchApiUrl = `http://${window.location.hostname}:8082`;
+let searchApiUrl = `${window.location.protocol}//${window.location.hostname}:8081`;
+if (window.location.hostname !== 'localhost') {
+  searchApiUrl += '/api';
+}
 
 class SearchService {
   async search(searchTerm, searchField) {

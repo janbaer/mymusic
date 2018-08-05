@@ -17,6 +17,7 @@ rsync -avuz --progress --delete \
   -e "ssh -i ~/.ssh/rsync-key"  \
   --exclude="log/"              \
   --exclude="data/"             \
+  --exclude="certificates/"     \
   ./ $USER@$SERVER_NAME:${TARGET_DIR}/
 
 rsync -avuz --progress          \
