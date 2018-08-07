@@ -36,7 +36,7 @@ func (task CleanupTask) Execute() (*model.CleanupStats, error) {
 	for index, song := range *songs {
 		if !task.fileAccess.ExistsFile(song.FilePath) {
 			deletedSongs = append(deletedSongs, song)
-			task.storage.Delete(song)
+			task.storage.Delete(&song)
 		}
 		updateCleanupProgress(bar, index)
 	}

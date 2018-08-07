@@ -3,18 +3,22 @@ package tasks
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
 	"net/url"
+	"strconv"
 
+	"github.com/gorilla/mux"
+
+	"github.com/janbaer/mp3db/files"
 	"github.com/janbaer/mp3db/model"
 	"github.com/janbaer/mp3db/storage"
 )
 
 // ServeTask - This will provide an webserver with an restfull endpoint for searching via HTTP
 type ServeTask struct {
-	storage storage.Storage
-	port    int
+	storage    storage.Storage
+	fileAccess files.FileAccess
+	port       int
 }
 
 // SearchOptions - defines in which fields should be searched
@@ -25,35 +29,68 @@ type SearchOptions struct {
 }
 
 // NewServeTask - creates a new instance of the ServeTask
-func NewServeTask(storage storage.Storage, port int) *ServeTask {
-	return &ServeTask{storage, port}
+func NewServeTask(storage storage.Storage, fileAccess files.FileAccess, port int) *ServeTask {
+	return &ServeTask{storage, fileAccess, port}
 }
 
 // Execute - Executes the taks and searches for the given search term
 func (task *ServeTask) Execute() error {
-	http.HandleFunc("/songs", func(w http.ResponseWriter, r *http.Request) {
-		searchTerm, searchOptions := getQueryParams(r.RequestURI)
-		searchQuery, values := storage.BuildSearchQuery(searchTerm, *searchOptions)
+	router := mux.NewRouter()
 
-		var songs *[]model.Song
-
-		if len(searchTerm) > 0 {
-			songs, _ = task.storage.QuerySongs(searchQuery, values)
-		} else {
-			songs, _ = task.storage.QueryAll()
-		}
-
-		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-		w.WriteHeader(http.StatusOK)
-		if err := json.NewEncoder(w).Encode(songs); err != nil {
-			log.Println(err)
-		}
-	})
+	router.HandleFunc("/songs/{id:[0-9]+}", task.handleGetSong).Methods("GET")
+	router.HandleFunc("/songs/{id:[0-9]+}", task.handleDeleteSong).Methods("DELETE")
+	router.HandleFunc("/songs", task.handleGetSongs).Methods("GET")
 
 	listenAddress := fmt.Sprintf(":%d", task.port)
 	fmt.Printf("MP3DB is waiting for search-requests on port %d\n", task.port)
 
-	return http.ListenAndServe(listenAddress, nil)
+	return http.ListenAndServe(listenAddress, router)
+}
+
+func (task *ServeTask) handleGetSongs(w http.ResponseWriter, r *http.Request) {
+	searchTerm, searchOptions := getQueryParams(r.RequestURI)
+	searchQuery, values := storage.BuildSearchQuery(searchTerm, *searchOptions)
+
+	var songs *[]model.Song
+
+	if len(searchTerm) > 0 {
+		songs, _ = task.storage.QuerySongs(searchQuery, values)
+	} else {
+		songs, _ = task.storage.QueryAll()
+	}
+
+	payload, _ := json.Marshal(songs)
+
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.Write(payload)
+}
+
+func (task *ServeTask) handleGetSong(w http.ResponseWriter, r *http.Request) {
+	songID, _ := strconv.Atoi(mux.Vars(r)["id"])
+
+	song, err := task.storage.QueryByID(songID)
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	payload, _ := json.Marshal(song)
+
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.Write(payload)
+}
+
+func (task *ServeTask) handleDeleteSong(w http.ResponseWriter, r *http.Request) {
+	songID, _ := strconv.Atoi(mux.Vars(r)["id"])
+
+	song, _ := task.storage.QueryByID(songID)
+	if song != nil {
+		if err := task.storage.Delete(song); err == nil {
+			task.fileAccess.DeleteFile(song.FilePath)
+		}
+	}
+
+	w.WriteHeader(http.StatusOK)
 }
 
 func getQueryParams(requestURI string) (string, *model.SearchOptions) {

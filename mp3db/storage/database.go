@@ -127,7 +127,7 @@ func (database *Database) QueryFilePath(filePath string) (*model.Song, error) {
 }
 
 // Delete - Deletes the given song from the database
-func (database *Database) Delete(song model.Song) error {
+func (database *Database) Delete(song *model.Song) error {
 	_, err := database.db.Exec("DELETE FROM Songs WHERE id=?", song.FilePath)
 	return err
 }

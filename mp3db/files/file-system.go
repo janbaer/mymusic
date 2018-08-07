@@ -60,6 +60,14 @@ func (fileSystem FileSystem) WalkDirectory(rootDir string) (*[]string, error) {
 	return &filesToImport, nil
 }
 
+// DeleteFile - deletes the file with the passed filePath
+func (fileSystem FileSystem) DeleteFile(filePath string) error {
+	if fileSystem.ExistsFile(filePath) {
+		return os.Remove(filePath)
+	}
+	return nil
+}
+
 func configureAndStartSpinner(rootDir string) *spinner.Spinner {
 	s := spinner.New(spinner.CharSets[37], 100*time.Millisecond)
 	s.Suffix = fmt.Sprintf(" Start with importing %s, please wait... ", rootDir)

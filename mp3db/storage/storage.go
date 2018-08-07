@@ -11,5 +11,5 @@ type Storage interface {
 	QueryFilePath(filePath string) (*model.Song, error)
 	Insert(song *model.Song) error
 	Update(song *model.Song) error
-	Delete(song model.Song) error
+	Delete(song *model.Song) error
 }

@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/janbaer/mp3db/files"
 	"github.com/janbaer/mp3db/storage"
 	"github.com/janbaer/mp3db/tasks"
 	"github.com/spf13/cobra"
@@ -31,7 +32,7 @@ var serveCmd = &cobra.Command{
 			port = Port
 		}
 
-		task := tasks.NewServeTask(database, port)
+		task := tasks.NewServeTask(database, new(files.FileSystem), port)
 
 		err = task.Execute()
 		if err != nil {
