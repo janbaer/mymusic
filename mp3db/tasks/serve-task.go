@@ -7,6 +7,7 @@ import (
 	"net/url"
 	"strconv"
 
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 
 	"github.com/janbaer/mp3db/files"
@@ -41,10 +42,12 @@ func (task *ServeTask) Execute() error {
 	router.HandleFunc("/songs/{id:[0-9]+}", task.handleDeleteSong).Methods("DELETE")
 	router.HandleFunc("/songs", task.handleGetSongs).Methods("GET")
 
+	originsOk := handlers.AllowedOrigins([]string{"http://localhost:8080"})
+
 	listenAddress := fmt.Sprintf(":%d", task.port)
 	fmt.Printf("MP3DB is waiting for search-requests on port %d\n", task.port)
 
-	return http.ListenAndServe(listenAddress, router)
+	return http.ListenAndServe(listenAddress, handlers.CORS(originsOk)(router))
 }
 
 func (task *ServeTask) handleGetSongs(w http.ResponseWriter, r *http.Request) {
