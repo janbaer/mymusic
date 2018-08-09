@@ -1,6 +1,6 @@
-let searchApiUrl = `${window.location.protocol}//${window.location.hostname}:8081`;
+let searchApiUrl = `${window.location.protocol}//${window.location.hostname}:8082`;
 if (window.location.hostname !== 'localhost') {
-  searchApiUrl += '/api';
+  searchApiUrl = `${window.location.protocol}//${window.location.hostname}:${window.location.port}/api`;
 }
 
 class SearchService {
