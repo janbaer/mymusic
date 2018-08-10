@@ -14,15 +14,15 @@ import (
 // UpdateTask provides the ability to import all MP3 files
 // from a directory and all subdirectories
 type UpdateTask struct {
-	storage           storage.Storage
-	fileAccess        files.FileAccess
-	mp3MetadataReader files.MP3MetadataReader
-	updateLogWriter   logger.UpdateLogWriter
+	storage         storage.Storage
+	fileAccess      files.FileAccess
+	id3Reader       files.ID3Reader
+	updateLogWriter logger.UpdateLogWriter
 }
 
 // NewImportTask - creates a new Instance of the UpdateTask
-func NewUpdateTask(storage storage.Storage, fileAccess files.FileAccess, mp3MetadataReader files.MP3MetadataReader, updateLogWriter logger.UpdateLogWriter) *UpdateTask {
-	return &UpdateTask{storage, fileAccess, mp3MetadataReader, updateLogWriter}
+func NewUpdateTask(storage storage.Storage, fileAccess files.FileAccess, id3Reader files.ID3Reader, updateLogWriter logger.UpdateLogWriter) *UpdateTask {
+	return &UpdateTask{storage, fileAccess, id3Reader, updateLogWriter}
 }
 
 // Execute - executes the task to import all MP3 files
@@ -56,7 +56,7 @@ func (task *UpdateTask) startUpdate(filesToImport *[]string) (*[]string, int, in
 	bar := progress.NewInt(totalCountOfFilesToImport)
 
 	for index, fileToImport := range *filesToImport {
-		song, err := task.mp3MetadataReader.Read(fileToImport)
+		song, err := task.id3Reader.Read(fileToImport)
 		if err != nil {
 			failedFiles = append(failedFiles, fileToImport)
 			continue

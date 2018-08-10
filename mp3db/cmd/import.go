@@ -41,7 +41,7 @@ var importCmd = &cobra.Command{
 		task := tasks.NewImportTask(
 			database,
 			new(files.FileSystem),
-			new(files.RealMP3MetadataReader),
+			new(files.ID3TagReadWriter),
 			logger.NewImportLogLogger(dataDirectoryPath),
 		)
 

@@ -48,3 +48,7 @@ afterwards. This will download the dependency to the vendor folder and update th
 In case you don't want to checkin the *vendor* folder, you also need to enter `dep ensure` to download
 all packages to the *vendor*, that will be created automatically from dep.
 
+## External dependencies
+
+For the usage of go-taglib it's necessary to install the static **taglib** libraries before. So you
+have to enter `sudo apt install libtagc0-dev` before.

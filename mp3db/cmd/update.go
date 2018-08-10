@@ -41,7 +41,7 @@ var updateCmd = &cobra.Command{
 		task := tasks.NewUpdateTask(
 			database,
 			new(files.FileSystem),
-			new(files.RealMP3MetadataReader),
+			new(files.ID3TagReadWriter),
 			logger.NewUpdateLogLogger(dataDirectoryPath),
 		)
 

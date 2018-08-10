@@ -18,14 +18,6 @@
   revision = "6d19e6a8df12fdfc44a90a24b677a6d04a80b91f"
 
 [[projects]]
-  branch = "master"
-  digest = "1:25f0ba1c2e1fe9a2fdb750b0d251a0672917c45f1e5b9771a8c28e77fee5a0f5"
-  name = "github.com/dhowden/tag"
-  packages = ["."]
-  pruneopts = "UT"
-  revision = "e80a3fa76a9645b4a90127deab5b271d8c5bcf85"
-
-[[projects]]
   digest = "1:865079840386857c809b72ce300be7580cb50d3d3129ce11bf9aa6ca2bc1934a"
   name = "github.com/fatih/color"
   packages = ["."]
@@ -209,6 +201,14 @@
 
 [[projects]]
   branch = "master"
+  digest = "1:93947cf044bb9bce2a7f7849ec6e150ed4d0d9a75ef33ebfe92bcfae06452162"
+  name = "github.com/wtolson/go-taglib"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "586eb63c2628271fa63a5b4e607c6f9c0278e2ea"
+
+[[projects]]
+  branch = "master"
   digest = "1:d773e525476aefa22ea944a5425a9bfb99819b2e67eeb9b1966454fd57522bbf"
   name = "golang.org/x/sys"
   packages = ["unix"]
@@ -243,7 +243,6 @@
   analyzer-version = 1
   input-imports = [
     "github.com/briandowns/spinner",
-    "github.com/dhowden/tag",
     "github.com/gorilla/handlers",
     "github.com/gorilla/mux",
     "github.com/mattn/go-sqlite3",
@@ -251,6 +250,7 @@
     "github.com/spf13/viper",
     "github.com/tj/go-progress",
     "github.com/tj/go/term",
+    "github.com/wtolson/go-taglib",
   ]
   solver-name = "gps-cdcl"
   solver-version = 1
