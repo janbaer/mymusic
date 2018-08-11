@@ -89,6 +89,12 @@ func (database *Database) Update(song *model.Song) error {
 	return err
 }
 
+// Delete - Deletes the given song from the database
+func (database *Database) Delete(song *model.Song) error {
+	_, err := database.db.Exec("DELETE FROM Songs WHERE id=?", song.ID)
+	return err
+}
+
 // QueryAll - Returns all the Songs we actually have in the database
 func (database *Database) QueryAll() (*[]model.Song, error) {
 	rows, err := database.db.Query("SELECT * FROM SONGS ORDER BY artist, album, title")
@@ -124,12 +130,6 @@ func (database *Database) QueryByID(id int) (*model.Song, error) {
 func (database *Database) QueryFilePath(filePath string) (*model.Song, error) {
 	row := database.db.QueryRow("SELECT * FROM SONGS WHERE FilePath=?", filePath)
 	return mapRowToSong(row)
-}
-
-// Delete - Deletes the given song from the database
-func (database *Database) Delete(song *model.Song) error {
-	_, err := database.db.Exec("DELETE FROM Songs WHERE id=?", song.FilePath)
-	return err
 }
 
 func openDb(dbPath string) (*sql.DB, error) {
