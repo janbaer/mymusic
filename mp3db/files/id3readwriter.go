@@ -38,15 +38,16 @@ func (reader ID3TagReadWriter) Read(filePath string) (*model.Song, error) {
 
 func (reader ID3TagReadWriter) Write(filePath string, song *model.Song) error {
 	mp3File, err := readMp3File(filePath)
-
 	if err != nil {
-		mp3File.SetArtist(song.Artist)
-		mp3File.SetAlbum(song.Album)
-		mp3File.SetTitle(song.Title)
-		mp3File.SetGenre(song.Genre)
-
-		err = mp3File.Save()
+		return err
 	}
+
+	mp3File.SetArtist(song.Artist)
+	mp3File.SetAlbum(song.Album)
+	mp3File.SetTitle(song.Title)
+	mp3File.SetGenre(song.Genre)
+
+	err = mp3File.Save()
 
 	return err
 }

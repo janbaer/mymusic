@@ -19,6 +19,7 @@ import (
 type ServeTask struct {
 	storage    storage.Storage
 	fileAccess files.FileAccess
+	id3Writer  files.ID3Writer
 	port       int
 }
 
@@ -30,8 +31,8 @@ type SearchOptions struct {
 }
 
 // NewServeTask - creates a new instance of the ServeTask
-func NewServeTask(storage storage.Storage, fileAccess files.FileAccess, port int) *ServeTask {
-	return &ServeTask{storage, fileAccess, port}
+func NewServeTask(storage storage.Storage, fileAccess files.FileAccess, id3Writer files.ID3Writer, port int) *ServeTask {
+	return &ServeTask{storage, fileAccess, id3Writer, port}
 }
 
 // Execute - Executes the taks and searches for the given search term
@@ -40,6 +41,7 @@ func (task *ServeTask) Execute() error {
 
 	router.HandleFunc("/songs/{id:[0-9]+}", task.handleGetSong).Methods("GET")
 	router.HandleFunc("/songs/{id:[0-9]+}", task.handleDeleteSong).Methods("DELETE")
+	router.HandleFunc("/songs/{id:[0-9]+}", task.handlePutSong).Methods("PUT")
 	router.HandleFunc("/songs", task.handleGetSongs).Methods("GET")
 
 	originsOk := handlers.AllowedOrigins([]string{"http://localhost:8080"})
@@ -91,6 +93,37 @@ func (task *ServeTask) handleDeleteSong(w http.ResponseWriter, r *http.Request) 
 		if err := task.storage.Delete(song); err == nil {
 			task.fileAccess.DeleteFile(song.FilePath)
 		}
+	}
+
+	w.WriteHeader(http.StatusOK)
+}
+
+func (task *ServeTask) handlePutSong(w http.ResponseWriter, r *http.Request) {
+	songID, _ := strconv.Atoi(mux.Vars(r)["id"])
+
+	songToUpdate := model.Song{}
+	err := json.NewDecoder(r.Body).Decode(&songToUpdate)
+	if err != nil {
+		w.WriteHeader(http.StatusNotAcceptable)
+		return
+	}
+
+	song, _ := task.storage.QueryByID(songID)
+	if song == nil {
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	song.UpdateFrom(&songToUpdate)
+
+	if err := task.storage.Update(song); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	if err := task.id3Writer.Write(song.FilePath, song); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
 	}
 
 	w.WriteHeader(http.StatusOK)

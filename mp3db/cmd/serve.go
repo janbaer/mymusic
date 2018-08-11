@@ -32,7 +32,7 @@ var serveCmd = &cobra.Command{
 			port = Port
 		}
 
-		task := tasks.NewServeTask(database, new(files.FileSystem), port)
+		task := tasks.NewServeTask(database, new(files.FileSystem), new(files.ID3TagReadWriter), port)
 
 		err = task.Execute()
 		if err != nil {
