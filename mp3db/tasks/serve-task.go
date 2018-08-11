@@ -53,7 +53,7 @@ func (task *ServeTask) Execute() error {
 }
 
 func (task *ServeTask) handleGetSongs(w http.ResponseWriter, r *http.Request) {
-	searchTerm, searchOptions := getQueryParams(r.RequestURI)
+	searchTerm, searchOptions := getQueryParams(r.URL)
 	searchQuery, values := storage.BuildSearchQuery(searchTerm, *searchOptions)
 
 	var songs *[]model.Song
@@ -129,9 +129,7 @@ func (task *ServeTask) handlePutSong(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-func getQueryParams(requestURI string) (string, *model.SearchOptions) {
-	requestURL, _ := url.Parse(requestURI)
-
+func getQueryParams(requestURL *url.URL) (string, *model.SearchOptions) {
 	query := requestURL.Query()
 
 	if searchTerms, exists := query["q"]; exists {
