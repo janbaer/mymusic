@@ -4,7 +4,7 @@ import SearchResult from './components/search-result';
 import PageFooter from './../../components/page-footer';
 import classes from './index.less';
 
-import searchService from './../../services/search.service';
+import songsService from './../../services/songs.service';
 
 export default class SearchPage extends Component {
   constructor(props) {
@@ -15,7 +15,18 @@ export default class SearchPage extends Component {
   }
 
   async startSearch(searchTerm, searchField) {
-    const songs = await searchService.search(searchTerm, searchField);
+    const songs = await songsService.search(searchTerm, searchField);
+    this.setState({ songs });
+  }
+
+  async deleteSong(songId) {
+    await songsService.delete(songId);
+
+    const { songs } = this.state;
+
+    const index = songs.findIndex(s => s.id === songId);
+    songs.splice(index, 1);
+
     this.setState({ songs });
   }
 
@@ -35,7 +46,10 @@ export default class SearchPage extends Component {
           </nav>
         </header>
         <main>
-          <SearchResult songs={songs} />
+          <SearchResult
+            songs={songs}
+            onDeleteSong={songId => this.deleteSong(songId)}
+          />
         </main>
         <footer>
           <PageFooter />

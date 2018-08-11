@@ -3,7 +3,7 @@ if (window.location.hostname !== 'localhost') {
   searchApiUrl = `${window.location.protocol}//${window.location.hostname}:${window.location.port}/api`;
 }
 
-class SearchService {
+class SongsService {
   async search(searchTerm, searchField) {
     let query = `songs?q=${searchTerm}`;
     if (searchField) {
@@ -13,6 +13,10 @@ class SearchService {
     const response = await fetch(`${searchApiUrl}/${query}`);
     return response.json();
   }
+
+  async delete(songId) {
+    await fetch(`${searchApiUrl}/songs/${songId}`, { method: 'DELETE' });
+  }
 }
 
-export default new SearchService();
+export default new SongsService();
