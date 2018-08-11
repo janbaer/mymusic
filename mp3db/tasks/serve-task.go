@@ -44,12 +44,13 @@ func (task *ServeTask) Execute() error {
 	router.HandleFunc("/songs/{id:[0-9]+}", task.handlePutSong).Methods("PUT")
 	router.HandleFunc("/songs", task.handleGetSongs).Methods("GET")
 
-	originsOk := handlers.AllowedOrigins([]string{"http://localhost:8080"})
+	allowedOrigins := handlers.AllowedOrigins([]string{"http://localhost:8080"})
+	allowedMethods := handlers.AllowedMethods([]string{"GET", "PUT", "DELETE", "OPTIONS"})
 
 	listenAddress := fmt.Sprintf(":%d", task.port)
 	fmt.Printf("MP3DB is waiting for search-requests on port %d\n", task.port)
 
-	return http.ListenAndServe(listenAddress, handlers.CORS(originsOk)(router))
+	return http.ListenAndServe(listenAddress, handlers.CORS(allowedOrigins, allowedMethods)(router))
 }
 
 func (task *ServeTask) handleGetSongs(w http.ResponseWriter, r *http.Request) {
