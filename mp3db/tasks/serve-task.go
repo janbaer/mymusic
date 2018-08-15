@@ -46,11 +46,12 @@ func (task *ServeTask) Execute() error {
 
 	allowedOrigins := handlers.AllowedOrigins([]string{"http://localhost:8080"})
 	allowedMethods := handlers.AllowedMethods([]string{"GET", "PUT", "DELETE", "OPTIONS"})
+	allowedHeaders := handlers.AllowedHeaders([]string{"content-type"})
 
 	listenAddress := fmt.Sprintf(":%d", task.port)
 	fmt.Printf("MP3DB is waiting for search-requests on port %d\n", task.port)
 
-	return http.ListenAndServe(listenAddress, handlers.CORS(allowedOrigins, allowedMethods)(router))
+	return http.ListenAndServe(listenAddress, handlers.CORS(allowedOrigins, allowedMethods, allowedHeaders)(router))
 }
 
 func (task *ServeTask) handleGetSongs(w http.ResponseWriter, r *http.Request) {
