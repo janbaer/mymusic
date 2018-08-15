@@ -17,6 +17,18 @@ class SongsService {
   async delete(songId) {
     await fetch(`${searchApiUrl}/songs/${songId}`, { method: 'DELETE' });
   }
+
+  async update(song) {
+    const options = {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json; charset=utf-8',
+      },
+      body: JSON.stringify(song)
+    };
+
+    await fetch(`${searchApiUrl}/songs/${song.id}`, options);
+  }
 }
 
 export default new SongsService();

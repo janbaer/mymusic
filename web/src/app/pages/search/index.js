@@ -2,7 +2,7 @@ import { h, Component } from 'preact';
 import SearchPanel from './components/search-panel';
 import SearchResult from './components/search-result';
 import PageFooter from './../../components/page-footer';
-import classes from './index.less';
+import './index.less';
 
 import songsService from './../../services/songs.service';
 
@@ -30,9 +30,20 @@ export default class SearchPage extends Component {
     this.setState({ songs });
   }
 
+  async changeSong(song) {
+    await songsService.update(song);
+
+    const { songs } = this.state;
+
+    const index = songs.findIndex(s => s.id === song.id);
+    songs[index] = song;
+
+    this.setState({ songs });
+  }
+
   render(props, { songs }) {
     return (
-      <div class={classes.Page}>
+      <div class="Page">
         <header>
           <nav class="navbar" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
@@ -49,6 +60,7 @@ export default class SearchPage extends Component {
           <SearchResult
             songs={songs}
             onDeleteSong={songId => this.deleteSong(songId)}
+            onChangeSong={song => this.changeSong(song)}
           />
         </main>
         <footer>

@@ -1,5 +1,5 @@
 import { h, Component } from 'preact';
-import classes from './search-panel.less';
+import './search-panel.less';
 import SearchSvg from './../../../../images/search.svg';
 
 export default class SearchPanel extends Component {
@@ -76,7 +76,7 @@ export default class SearchPanel extends Component {
           class="button is-primary is-rounded"
           onClick={() => this.startSearch()}
         >
-          <SearchSvg class={classes.SearchIcon} />
+          <SearchSvg class="SearchPanel-searchIcon" />
         </a>
       </div>
     );

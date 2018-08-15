@@ -24,6 +24,7 @@
     ],
     "plugins": [
       "inline-react-svg",
+      "transform-object-rest-spread",
       [
         "module-resolver",
         {
@@ -81,6 +82,7 @@
     ]
   },
   "dependencies": {
+    "classnames": "2.2.6",
     "preact": ">=5",
     "preact-compat": "3.18.0"
   },
@@ -88,6 +90,7 @@
     "babel-eslint": "8.2.1",
     "babel-plugin-inline-react-svg": "0.5.4",
     "babel-plugin-module-resolver": "3.1.1",
+    "babel-plugin-transform-object-rest-spread": "6.26.0",
     "babel-polyfill": "6.26.0",
     "babel-preset-env": "1.7.0",
     "babel-preset-preact": "1.1.0",
