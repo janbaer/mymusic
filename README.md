@@ -1,10 +1,10 @@
 # MyMusic
 
 This repository contains the source code for my personal music management project.
-Its for my personal needs and it doows only what's important for my personal workflows.
+Its for my personal needs and it does only what's important for my personal workflows.
 
 When anyone is interested to use it, feel free to fork it, but I don't guarantee for anything and I
-also don't take car for any comptibility aspects.
+also don't take care on any comptibility aspects.
 
 The project contains three different parts.
 
@@ -18,8 +18,8 @@ The project contains three different parts.
    But MP3DB provides also a webserver with a REST interface for searching in the database.
    This REST interface is used by the web application.
 
-3. Deploy - The is for deploying the whole project to my Synology-DS and build and run it there
-   with docker-compose. It's a really great feature that Synology supports Docker, so I've my own
+3. Deploy - This is for deploying the whole project to my Synology-DS, build and run it there
+   with **docker-compose**. It's a really great feature that Synology supports Docker, so I've my own
    server at home for private things.
 
 For more explanations read the README files in the subdirectories.
