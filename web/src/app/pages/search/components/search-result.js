@@ -8,11 +8,11 @@ export default class SearchResult extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      dialogModel: {
-        show: null,
-        song: null
-      }
+      isEditDialogShown: false,
+      song: null
     };
+
+    this.onHideDialog = this.onHideDialog.bind(this);
   }
 
   async deleteSong(songId) {
@@ -22,12 +22,14 @@ export default class SearchResult extends Component {
   }
 
   async editSong(song) {
-    const { dialogModel } = this.state;
-    dialogModel.song = song;
-    const dialogResult = await this.state.dialogModel.show();
+    this.setState({ song, isEditDialogShown: true });
+  }
+
+  onHideDialog(dialogResult, song) {
     if (dialogResult) {
-      this.props.onChangeSong(dialogModel.song);
+      this.props.onChangeSong(song);
     }
+    this.setState({ song: null, isEditDialogShown: false });
   }
 
   renderDeleteButton(songId) {
@@ -68,11 +70,11 @@ export default class SearchResult extends Component {
     );
   }
 
-  render({ songs }, { dialogModel }) {
+  render({ songs }, state) {
     return (
       <table class="SearchResult-table table">
-        <EditDialog dialogModel={dialogModel} />
         <thead>
+          {state.isEditDialogShown && <EditDialog song={state.song} onHideDialog={this.onHideDialog} />}
           <tr>
             <th />
             <th>Artist</th>
