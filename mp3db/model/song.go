@@ -8,10 +8,11 @@ type Song struct {
 	Title    string `json:"title"`
 	Album    string `json:"album"`
 	Genre    string `json:"genre"`
+	Length   string `json:"length"`
 }
 
 // NewSong - creates a new song with using the given params
-func NewSong(id int, filePath string, artist string, title string, album string, genre string) Song {
+func NewSong(id int, filePath string, artist string, title string, album string, genre string, length string) Song {
 	return Song{
 		ID:       id,
 		FilePath: filePath,
@@ -19,6 +20,7 @@ func NewSong(id int, filePath string, artist string, title string, album string,
 		Title:    title,
 		Album:    album,
 		Genre:    genre,
+		Length:   length,
 	}
 }
 
@@ -29,6 +31,7 @@ func (song *Song) UpdateFrom(otherSong *Song) {
 	song.Title = otherSong.Title
 	song.Genre = otherSong.Genre
 	song.FilePath = otherSong.FilePath
+	song.Length = otherSong.Length
 }
 
 // TagsAreEqual - compares, if boths songs are equal except the id
@@ -37,5 +40,6 @@ func (song *Song) TagsAreEqual(otherSong *Song) bool {
 		song.Album == otherSong.Album &&
 		song.Title == otherSong.Title &&
 		song.Genre == otherSong.Genre &&
+		song.Length == otherSong.Length &&
 		song.FilePath == otherSong.FilePath
 }

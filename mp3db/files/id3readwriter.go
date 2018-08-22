@@ -79,5 +79,6 @@ func mapMetadataToSong(filePath string, mp3File *taglib.File) *model.Song {
 		Title:    mp3File.Title(),
 		Album:    mp3File.Album(),
 		Genre:    mp3File.Genre(),
+		Length:   mp3File.Length().String(),
 	}
 }

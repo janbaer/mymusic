@@ -35,7 +35,8 @@ func CreateDatabase(dbPath string) (*Database, error) {
 			artist text,
 			title text,
 			album text,
-			genre text
+			genre text,
+			length text
 		)
 	`
 
@@ -70,12 +71,13 @@ func (database *Database) Close() {
 // Insert the given Song into the songs table
 func (database *Database) Insert(song *model.Song) error {
 	_, err := database.db.Exec(
-		"INSERT INTO Songs (filePath,artist,title,album,genre) VALUES(?, ?, ?, ?, ?)",
+		"INSERT INTO Songs (filePath,artist,title,album,genre,length) VALUES(?, ?, ?, ?, ?, ?)",
 		song.FilePath,
 		song.Artist,
 		song.Title,
 		song.Album,
 		song.Genre,
+		song.Length,
 	)
 	return err
 }
@@ -83,8 +85,8 @@ func (database *Database) Insert(song *model.Song) error {
 // Update the given Song into the songs table
 func (database *Database) Update(song *model.Song) error {
 	_, err := database.db.Exec(
-		"UPDATE Songs SET artist=?, title=?, album=?, genre=?, filePath=? WHERE id=?",
-		song.Artist, song.Title, song.Album, song.Genre, song.FilePath, song.ID,
+		"UPDATE Songs SET artist=?, title=?, album=?, genre=?, filePath=?, length=? WHERE id=?",
+		song.Artist, song.Title, song.Album, song.Genre, song.FilePath, song.Length, song.ID,
 	)
 	return err
 }
@@ -152,16 +154,16 @@ func mapRowsToSongs(rows *sql.Rows) (*[]model.Song, error) {
 
 func mapRowToSong(row dbRow) (*model.Song, error) {
 	var id int
-	var filePath, artist, title, album, genre string
+	var filePath, artist, title, album, genre, length string
 
-	err := row.Scan(&id, &filePath, &artist, &title, &album, &genre)
+	err := row.Scan(&id, &filePath, &artist, &title, &album, &genre, &length)
 	if err == sql.ErrNoRows {
 		return nil, nil
 	} else if err != nil {
 		return nil, err
 	}
 
-	song := model.NewSong(id, filePath, artist, title, album, genre)
+	song := model.NewSong(id, filePath, artist, title, album, genre, length)
 
 	return &song, nil
 }
