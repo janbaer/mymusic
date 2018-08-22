@@ -42,6 +42,7 @@ func (task *ServeTask) Execute() error {
 	router.HandleFunc("/songs/{id:[0-9]+}", task.handleGetSong).Methods("GET")
 	router.HandleFunc("/songs/{id:[0-9]+}", task.handleDeleteSong).Methods("DELETE")
 	router.HandleFunc("/songs/{id:[0-9]+}", task.handlePutSong).Methods("PUT")
+	router.HandleFunc("/songs/duplicates", task.handleGetDuplicates).Methods("GET")
 	router.HandleFunc("/songs", task.handleGetSongs).Methods("GET")
 
 	allowedOrigins := handlers.AllowedOrigins([]string{"http://localhost:8080"})
@@ -65,6 +66,17 @@ func (task *ServeTask) handleGetSongs(w http.ResponseWriter, r *http.Request) {
 	} else {
 		songs, _ = task.storage.QueryAll()
 	}
+
+	payload, _ := json.Marshal(songs)
+
+	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	w.Write(payload)
+}
+
+func (task *ServeTask) handleGetDuplicates(w http.ResponseWriter, r *http.Request) {
+	var songs *[]model.Song
+
+	songs, _ = task.storage.FindDuplicates()
 
 	payload, _ := json.Marshal(songs)
 

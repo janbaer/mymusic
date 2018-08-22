@@ -7,6 +7,7 @@ import "github.com/janbaer/mp3db/model"
 type Storage interface {
 	QueryAll() (*[]model.Song, error)
 	QuerySongs(query string, queryValues []string) (*[]model.Song, error)
+	FindDuplicates() (*[]model.Song, error)
 	QueryByID(id int) (*model.Song, error)
 	QueryFilePath(filePath string) (*model.Song, error)
 	Insert(song *model.Song) error
