@@ -59,13 +59,14 @@ export default class SearchResult extends Component {
   renderSong(song) {
     return (
       <tr>
-        <td class="SearchResult-actionButtonsColumn">
+        <td>
           { this.renderDeleteButton(song.id) }
           { this.renderEditButton(song) }
         </td>
         <td>{ song.artist }</td>
         <td>{ song.album }</td>
         <td><span title={song.filePath}>{ song.title }</span></td>
+        <td>{ song.length }</td>
       </tr>
     );
   }
@@ -76,10 +77,11 @@ export default class SearchResult extends Component {
         <thead>
           {state.isEditDialogShown && <EditDialog song={state.song} onHideDialog={this.onHideDialog} />}
           <tr>
-            <th />
+            <th class="SearchResult-actionButtonsColumn" />
             <th>Artist</th>
             <th>Album</th>
             <th>Title</th>
+            <th class="SearchResult-columnLength">Length</th>
           </tr>
         </thead>
         <tbody>
