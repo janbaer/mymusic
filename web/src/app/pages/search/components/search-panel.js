@@ -38,7 +38,7 @@ export default class SearchPanel extends Component {
 
   renderSearchInput(searchTerm) {
     return (
-      <div class="navbar-item">
+      <div>
         <input
           class="input"
           type="text"
@@ -53,7 +53,7 @@ export default class SearchPanel extends Component {
 
   renderSearchFields(searchField) {
     return (
-      <div class="navbar-item">
+      <div>
         <div class="field">
           <div class="control">
             <div class="select">
@@ -75,7 +75,7 @@ export default class SearchPanel extends Component {
 
   renderSearchButton() {
     return (
-      <div class="navbar-item">
+      <div>
         <a
           class="button is-primary is-rounded"
           onClick={() => this.startSearch()}
@@ -88,7 +88,7 @@ export default class SearchPanel extends Component {
 
   renderDuplicatesButton() {
     return (
-      <div class="navbar-item">
+      <div>
         <a
           class="button is-primary is-rounded"
           onClick={() => this.findDuplicates()}
@@ -102,7 +102,7 @@ export default class SearchPanel extends Component {
 
   render(props, state) {
     return (
-      <div class="navbar-end">
+      <div class="SearchPanel-container">
         { this.renderSearchInput(state.searchTerm) }
         { this.renderSearchFields(state.searchField) }
         { this.renderSearchButton() }

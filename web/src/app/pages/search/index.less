@@ -1,6 +1,6 @@
 @PANEL_COLOR: aquamarine;
 
-.Page {
+.SearchPage {
   height: 100vh;
   display: grid;
   grid-template-columns: 1fr;
@@ -9,33 +9,38 @@
     "toolbar"
     "content"
     "footer";
-}
 
-header {
-  grid-area: toolbar;
-  & > nav {
-    background-color: @PANEL_COLOR !important;
+  header {
+    grid-area: toolbar;
+    background-color: @PANEL_COLOR;
+
   }
 
-  & h1 {
-    margin-bottom: 0px !important;
-    align-self: center;
-    margin-left: 5px;
+  main {
+    grid-area: content;
+    padding: 10px;
+    overflow-y: auto;
+  }
+
+  footer {
+    grid-area: footer;
+    background-color: @PANEL_COLOR;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+
+    & h1 {
+      margin-bottom: 0px !important;
+      margin-left: 5px;
+      flex: 1;
+    }
   }
 }
-
-main {
-  grid-area: content;
-  padding: 10px;
-  overflow-y: auto;
-}
-
-footer {
-  grid-area: footer;
-  background-color: @PANEL_COLOR;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 

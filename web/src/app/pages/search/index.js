@@ -48,18 +48,14 @@ export default class SearchPage extends Component {
 
   render(props, { songs }) {
     return (
-      <div class="Page">
+      <div class="SearchPage">
         <header>
-          <nav class="navbar" role="navigation" aria-label="main navigation">
-            <div class="navbar-brand">
-              <h1 class="title">MyMusic</h1>
-            </div>
-            <div class="navbar-menu">
-              <SearchPanel
-                onStartSearch={(searchTerm, searchField) => this.startSearch(searchTerm, searchField)}
-                onFindDuplicates={() => this.findDuplicates()}
-              />
-            </div>
+          <nav>
+            <h1 class="title">MyMusic</h1>
+            <SearchPanel
+              onStartSearch={(searchTerm, searchField) => this.startSearch(searchTerm, searchField)}
+              onFindDuplicates={() => this.findDuplicates()}
+            />
           </nav>
         </header>
         <main>
