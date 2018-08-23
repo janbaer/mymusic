@@ -14,6 +14,11 @@ class SongsService {
     return response.json();
   }
 
+  async findDuplicates() {
+    const response = await fetch(`${searchApiUrl}/songs/duplicates`);
+    return response.json();
+  }
+
   async delete(songId) {
     await fetch(`${searchApiUrl}/songs/${songId}`, { method: 'DELETE' });
   }

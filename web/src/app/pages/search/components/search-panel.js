@@ -26,6 +26,10 @@ export default class SearchPanel extends Component {
     }
   }
 
+  findDuplicates() {
+    this.props.onFindDuplicates();
+  }
+
   handleSearchInputKeyPress(key, value) {
     if (key === 'Enter') {
       this.setState({searchTerm: value}, this.startSearch);
@@ -82,12 +86,27 @@ export default class SearchPanel extends Component {
     );
   }
 
+  renderDuplicatesButton() {
+    return (
+      <div class="navbar-item">
+        <a
+          class="button is-primary is-rounded"
+          onClick={() => this.findDuplicates()}
+          title="Duplicates"
+        >
+          Duplicates
+        </a>
+      </div>
+    );
+  }
+
   render(props, state) {
     return (
       <div class="navbar-end">
         { this.renderSearchInput(state.searchTerm) }
         { this.renderSearchFields(state.searchField) }
         { this.renderSearchButton() }
+        { this.renderDuplicatesButton() }
       </div>
     );
   }

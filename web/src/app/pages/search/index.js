@@ -19,6 +19,11 @@ export default class SearchPage extends Component {
     this.setState({ songs });
   }
 
+  async findDuplicates() {
+    const songs = await songsService.findDuplicates();
+    this.setState({ songs });
+  }
+
   async deleteSong(songId) {
     await songsService.delete(songId);
 
@@ -52,6 +57,7 @@ export default class SearchPage extends Component {
             <div class="navbar-menu">
               <SearchPanel
                 onStartSearch={(searchTerm, searchField) => this.startSearch(searchTerm, searchField)}
+                onFindDuplicates={() => this.findDuplicates()}
               />
             </div>
           </nav>
