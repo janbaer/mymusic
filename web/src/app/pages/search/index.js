@@ -10,18 +10,23 @@ export default class SearchPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      songs: []
+      songs: [],
+      isBusy: false
     };
   }
 
   async startSearch(searchTerm, searchField) {
-    const songs = await songsService.search(searchTerm, searchField);
-    this.setState({ songs });
+    this.setState({ isBusy: true }, async() => {
+      const songs = await songsService.search(searchTerm, searchField);
+      this.setState({ songs, isBusy: false });
+    });
   }
 
   async findDuplicates() {
-    const songs = await songsService.findDuplicates();
-    this.setState({ songs });
+    this.setState({ isBusy: true }, async() => {
+      const songs = await songsService.findDuplicates();
+      this.setState({ songs, isBusy: false });
+    });
   }
 
   async deleteSong(songId) {
@@ -46,7 +51,7 @@ export default class SearchPage extends Component {
     this.setState({ songs });
   }
 
-  render(props, { songs }) {
+  render(props, { songs, isBusy }) {
     return (
       <div class="SearchPage">
         <header>
@@ -61,6 +66,7 @@ export default class SearchPage extends Component {
         <main>
           <SearchResult
             songs={songs}
+            isBusy={isBusy}
             onDeleteSong={songId => this.deleteSong(songId)}
             onChangeSong={song => this.changeSong(song)}
           />

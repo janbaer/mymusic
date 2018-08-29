@@ -2,6 +2,7 @@ import { h, Component } from 'preact';
 import './search-result.less';
 import DeleteSvg from './../../../../images/delete.svg';
 import EditSvg from './../../../../images/edit.svg';
+import SyncSvg from './../../../../images/sync.svg';
 import EditDialog from './edit-dialog.js';
 
 export default class SearchResult extends Component {
@@ -71,23 +72,35 @@ export default class SearchResult extends Component {
     );
   }
 
-  render({ songs }, state) {
+  renderProgressOverlay(isBusy) {
+    if (!isBusy) {
+      return null;
+    }
     return (
-      <table class="SearchResult-table table">
-        <thead>
-          {state.isEditDialogShown && <EditDialog song={state.song} onHideDialog={this.onHideDialog} />}
-          <tr>
-            <th class="SearchResult-actionButtonsColumn" />
-            <th>Artist</th>
-            <th>Album</th>
-            <th>Title</th>
-            <th class="SearchResult-columnLength">Length</th>
-          </tr>
-        </thead>
-        <tbody>
-          { songs.map(song => this.renderSong(song))}
-        </tbody>
-      </table>
+      <div class="SearchResult-progressOverlay"><SyncSvg /></div>
+    );
+  }
+
+  render({ songs, isBusy }, state) {
+    return (
+      <div class="SearchResult-div">
+        { this.renderProgressOverlay(isBusy) }
+        {state.isEditDialogShown && <EditDialog song={state.song} onHideDialog={this.onHideDialog} />}
+        <table class="SearchResult-table table">
+          <thead>
+            <tr>
+              <th class="SearchResult-actionButtonsColumn" />
+              <th>Artist</th>
+              <th>Album</th>
+              <th>Title</th>
+              <th class="SearchResult-columnLength">Length</th>
+            </tr>
+          </thead>
+          <tbody>
+            { songs.map(song => this.renderSong(song))}
+          </tbody>
+        </table>
+      </div>
     );
   }
 }
