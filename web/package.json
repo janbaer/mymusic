@@ -17,6 +17,10 @@
   "browserslist": [
     "last 1 Chrome versions"
   ],
+  "alias": {
+    "react": "preact-compat",
+    "react-dom": "preact-compat"
+  },
   "babel": {
     "presets": [
       "env",
@@ -24,19 +28,7 @@
     ],
     "plugins": [
       "inline-react-svg",
-      "transform-object-rest-spread",
-      [
-        "module-resolver",
-        {
-          "root": [
-            "."
-          ],
-          "alias": {
-            "react": "preact-compat",
-            "react-dom": "preact-compat"
-          }
-        }
-      ]
+      "transform-object-rest-spread"
     ]
   },
   "eslintConfig": {
@@ -44,8 +36,7 @@
       "standard",
       "standard-preact"
     ],
-    "plugins": [
-    ],
+    "plugins": [],
     "rules": {
       "semi": [
         "error",
@@ -83,7 +74,7 @@
   "dependencies": {
     "classnames": "2.2.6",
     "preact": "8.3.1",
-    "preact-compat": "3.18.2"
+    "preact-compat": "3.18.3"
   },
   "devDependencies": {
     "babel-eslint": "8.2.6",

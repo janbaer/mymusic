@@ -1,6 +1,8 @@
 import { h, Component } from 'preact';
-import './search-panel.less';
+
 import SearchSvg from './../../../../images/search.svg';
+
+import './search-panel.less';
 
 export default class SearchPanel extends Component {
   constructor(props) {

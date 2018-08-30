@@ -1,9 +1,12 @@
 import { h, Component } from 'preact';
-import './search-result.less';
+
+import EditDialog from './edit-dialog.js';
+
 import DeleteSvg from './../../../../images/delete.svg';
 import EditSvg from './../../../../images/edit.svg';
 import SyncSvg from './../../../../images/sync.svg';
-import EditDialog from './edit-dialog.js';
+
+import './search-result.less';
 
 export default class SearchResult extends Component {
   constructor(props) {

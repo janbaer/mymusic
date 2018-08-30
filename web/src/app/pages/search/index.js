@@ -1,10 +1,10 @@
 import { h, Component } from 'preact';
+import PageFooter from '~/app/components/page-footer';
+import songsService from '~/app/services/songs.service';
 import SearchPanel from './components/search-panel';
 import SearchResult from './components/search-result';
-import PageFooter from './../../components/page-footer';
-import './index.less';
 
-import songsService from './../../services/songs.service';
+import './index.less';
 
 export default class SearchPage extends Component {
   constructor(props) {
