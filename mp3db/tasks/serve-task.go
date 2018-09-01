@@ -3,9 +3,13 @@ package tasks
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"net/url"
+	"os"
+	"path/filepath"
 	"strconv"
+	"time"
 
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -39,14 +43,15 @@ func NewServeTask(storage storage.Storage, fileAccess files.FileAccess, id3Write
 func (task *ServeTask) Execute() error {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/songs/{id:[0-9]+}", task.handleGetSong).Methods("GET")
-	router.HandleFunc("/songs/{id:[0-9]+}", task.handleDeleteSong).Methods("DELETE")
-	router.HandleFunc("/songs/{id:[0-9]+}", task.handlePutSong).Methods("PUT")
-	router.HandleFunc("/songs/duplicates", task.handleGetDuplicates).Methods("GET")
-	router.HandleFunc("/songs", task.handleGetSongs).Methods("GET")
+	router.HandleFunc("/songs/{id:[0-9]+}", task.handleGetSong).Methods(http.MethodGet)
+	router.HandleFunc("/songs/{id:[0-9]+}", task.handleDeleteSong).Methods(http.MethodDelete)
+	router.HandleFunc("/songs/{id:[0-9]+}", task.handlePutSong).Methods(http.MethodPut)
+	router.HandleFunc("/songs/{id:[0-9]+}/content", task.handleStreamSong).Methods(http.MethodGet)
+	router.HandleFunc("/songs/duplicates", task.handleGetDuplicates).Methods(http.MethodGet)
+	router.HandleFunc("/songs", task.handleGetSongs).Methods(http.MethodGet)
 
 	allowedOrigins := handlers.AllowedOrigins([]string{"http://localhost:8080"})
-	allowedMethods := handlers.AllowedMethods([]string{"GET", "PUT", "DELETE", "OPTIONS"})
+	allowedMethods := handlers.AllowedMethods([]string{http.MethodGet, http.MethodPut, http.MethodDelete, http.MethodOptions})
 	allowedHeaders := handlers.AllowedHeaders([]string{"content-type"})
 
 	listenAddress := fmt.Sprintf(":%d", task.port)
@@ -141,6 +146,33 @@ func (task *ServeTask) handlePutSong(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
+}
+
+func (task *ServeTask) handleStreamSong(w http.ResponseWriter, r *http.Request) {
+	songID, _ := strconv.Atoi(mux.Vars(r)["id"])
+
+	song, _ := task.storage.QueryByID(songID)
+	if song == nil {
+		log.Printf("No song with ID %d could be found", songID)
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	if !task.fileAccess.ExistsFile(song.FilePath) {
+		log.Printf("File %s could not be found", song.FilePath)
+		w.WriteHeader(http.StatusNotFound)
+		return
+	}
+
+	file, err := os.Open(song.FilePath)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+	defer file.Close()
+
+	fileName := filepath.Base(song.FilePath)
+	http.ServeContent(w, r, fileName, time.Time{}, file)
 }
 
 func getQueryParams(requestURL *url.URL) (string, *model.SearchOptions) {
