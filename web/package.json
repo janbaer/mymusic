@@ -74,7 +74,8 @@
   "dependencies": {
     "classnames": "2.2.6",
     "preact": "8.3.1",
-    "preact-compat": "3.18.3"
+    "preact-compat": "3.18.3",
+    "react-paginate": "5.2.4"
   },
   "devDependencies": {
     "babel-eslint": "8.2.6",

@@ -16,6 +16,8 @@ export default class SearchPage extends Component {
   }
 
   async startSearch(searchTerm, searchField) {
+    await this.searchResultComponent.resetPaginator();
+
     this.setState({ isBusy: true }, async() => {
       const songs = await songsService.search(searchTerm, searchField);
       this.setState({ songs, isBusy: false });
@@ -23,6 +25,8 @@ export default class SearchPage extends Component {
   }
 
   async findDuplicates() {
+    await this.searchResultComponent.resetPaginator();
+
     this.setState({ isBusy: true }, async() => {
       const songs = await songsService.findDuplicates();
       this.setState({ songs, isBusy: false });
@@ -65,6 +69,7 @@ export default class SearchPage extends Component {
         </header>
         <main>
           <SearchResult
+            ref={searchResultComponent => { this.searchResultComponent = searchResultComponent; }}
             songs={songs}
             isBusy={isBusy}
             onDeleteSong={songId => this.deleteSong(songId)}

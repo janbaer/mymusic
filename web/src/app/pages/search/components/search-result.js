@@ -1,4 +1,5 @@
 import { h, Component } from 'preact';
+import ReactPaginate from 'react-paginate';
 
 import EditDialog from './edit-dialog.js';
 
@@ -8,12 +9,15 @@ import SyncSvg from './../../../../images/sync.svg';
 
 import './search-result.less';
 
+const PAGE_SIZE = 20;
+
 export default class SearchResult extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isEditDialogShown: false,
-      song: null
+      song: null,
+      selectedPage: 1
     };
 
     this.onHideDialog = this.onHideDialog.bind(this);
@@ -34,6 +38,12 @@ export default class SearchResult extends Component {
       this.props.onChangeSong(song);
     }
     this.setState({ song: null, isEditDialogShown: false });
+  }
+
+  resetPaginator() {
+    return new Promise(resolve => {
+      this.setState({ selectedPage: 1 }, resolve);
+    });
   }
 
   renderDeleteButton(songId) {
@@ -68,10 +78,47 @@ export default class SearchResult extends Component {
           { this.renderEditButton(song) }
         </td>
         <td>{ song.artist }</td>
-        <td>{ song.album }</td>
         <td><span title={song.filePath}>{ song.title }</span></td>
+        <td>{ song.album }</td>
         <td>{ song.length }</td>
       </tr>
+    );
+  }
+
+  handlePageClick(e) {
+    this.setState({ selectedPage: e.selected + 1 });
+  }
+
+  renderPaginator(countOfSongs, pageSize, selectedPage) {
+    if (countOfSongs < pageSize) {
+      return null;
+    }
+
+    const pageCount = countOfSongs / pageSize;
+
+    return (
+      <tfoot>
+        <tr>
+          <td colspan="5">
+            <ReactPaginate
+              previousLabel="zurück"
+              nextLabel="vor"
+              breakLabel={<span href="">...</span>}
+              breakClassName="break-me"
+              pageCount={pageCount}
+              marginPagesDisplayed={2}
+              pageRangeDisplayed={5}
+              onPageChange={(e) => this.handlePageClick(e)}
+              forcePage={selectedPage - 1}
+              containerClassName="SearchResult-paginator pagination"
+              activeClassName="pagination-link is-current"
+              pageLinkClassName="pagination-link"
+              previousClassName="pagination-previous"
+              nextClassName="pagination-next"
+            />
+          </td>
+        </tr>
+      </tfoot>
     );
   }
 
@@ -84,9 +131,20 @@ export default class SearchResult extends Component {
     );
   }
 
+  determinateSongsToVisualize(songs, selectedPage) {
+    if (songs.length <= PAGE_SIZE) {
+      return songs;
+    }
+
+    const startIndex = (selectedPage * PAGE_SIZE) - PAGE_SIZE;
+    return songs.slice(startIndex, startIndex + PAGE_SIZE);
+  }
+
   render({ songs, isBusy }, state) {
+    const displayedSongs = this.determinateSongsToVisualize(songs, state.selectedPage);
+
     return (
-      <div class="SearchResult-div">
+      <div class="SearchResult-container">
         { this.renderProgressOverlay(isBusy) }
         {state.isEditDialogShown && <EditDialog song={state.song} onHideDialog={this.onHideDialog} />}
         <table class="SearchResult-table table">
@@ -94,14 +152,15 @@ export default class SearchResult extends Component {
             <tr>
               <th class="SearchResult-actionButtonsColumn" />
               <th>Artist</th>
-              <th>Album</th>
               <th>Title</th>
+              <th>Album</th>
               <th class="SearchResult-columnLength">Length</th>
             </tr>
           </thead>
           <tbody>
-            { songs.map(song => this.renderSong(song))}
+            { displayedSongs.map(song => this.renderSong(song))}
           </tbody>
+          { this.renderPaginator(songs.length, PAGE_SIZE, state.selectedPage) }
         </table>
       </div>
     );
