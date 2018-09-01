@@ -1,26 +1,27 @@
-let searchApiUrl = `${window.location.protocol}//${window.location.hostname}:8082`;
-if (window.location.hostname !== 'localhost') {
-  searchApiUrl = `${window.location.protocol}//${window.location.hostname}:${window.location.port}/api`;
-}
+import { buildMP3DBApiUrl } from '~/app/helpers/api-url-builder.helper';
 
 class SongsService {
+  constructor() {
+    this.searchApiUrl = buildMP3DBApiUrl();
+  }
+
   async search(searchTerm, searchField) {
     let query = `songs?q=${searchTerm}`;
     if (searchField) {
       query += `&${searchField}`;
     }
 
-    const response = await fetch(`${searchApiUrl}/${query}`);
+    const response = await fetch(`${this.searchApiUrl}/${query}`);
     return response.json();
   }
 
   async findDuplicates() {
-    const response = await fetch(`${searchApiUrl}/songs/duplicates`);
+    const response = await fetch(`${this.searchApiUrl}/songs/duplicates`);
     return response.json();
   }
 
   async delete(songId) {
-    await fetch(`${searchApiUrl}/songs/${songId}`, { method: 'DELETE' });
+    await fetch(`${this.searchApiUrl}/songs/${songId}`, { method: 'DELETE' });
   }
 
   async update(song) {
@@ -32,7 +33,7 @@ class SongsService {
       body: JSON.stringify(song)
     };
 
-    await fetch(`${searchApiUrl}/songs/${song.id}`, options);
+    await fetch(`${this.searchApiUrl}/songs/${song.id}`, options);
   }
 }
 

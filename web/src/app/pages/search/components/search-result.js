@@ -1,6 +1,8 @@
 import { h, Component } from 'preact';
 import ReactPaginate from 'react-paginate';
 
+import { buildMP3DBApiUrl } from '~/app/helpers/api-url-builder.helper';
+
 import EditDialog from './edit-dialog.js';
 
 import DeleteSvg from './../../../../images/delete.svg';
@@ -46,6 +48,10 @@ export default class SearchResult extends Component {
     });
   }
 
+  buildUrlToStreamSong(songId) {
+    return `${buildMP3DBApiUrl()}/songs/${songId}/content`;
+  }
+
   renderDeleteButton(songId) {
     return (
       <button
@@ -78,7 +84,9 @@ export default class SearchResult extends Component {
           { this.renderEditButton(song) }
         </td>
         <td>{ song.artist }</td>
-        <td><span title={song.filePath}>{ song.title }</span></td>
+        <td>
+          <a title={song.filePath} href={this.buildUrlToStreamSong(song.id)} target="_blank">{ song.title }</a>
+        </td>
         <td>{ song.album }</td>
         <td>{ song.length }</td>
       </tr>
