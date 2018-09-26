@@ -34,7 +34,7 @@ export default class SearchPanel extends Component {
 
   handleSearchInputKeyPress(key, value) {
     if (key === 'Enter') {
-      this.setState({searchTerm: value}, this.startSearch);
+      this.setState({ searchTerm: value }, this.startSearch);
     }
   }
 
@@ -47,7 +47,7 @@ export default class SearchPanel extends Component {
           placeholder="Enter the search term"
           value={searchTerm}
           onKeyPress={event => this.handleSearchInputKeyPress(event.key, event.target.value)}
-          onChange={event => this.setState({searchTerm: event.target.value})}
+          onChange={event => this.setState({ searchTerm: event.target.value })}
         />
       </div>
     );

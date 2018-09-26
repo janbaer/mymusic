@@ -5,7 +5,7 @@ import './edit-dialog.less';
 export default class EditDialog extends Component {
   constructor(props) {
     super(props);
-    const song = {...this.props.song};
+    const song = { ...this.props.song };
     this.state = { song };
 
     this.hide = this.hide.bind(this);
