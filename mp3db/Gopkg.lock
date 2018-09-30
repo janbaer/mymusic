@@ -18,6 +18,14 @@
   revision = "6d19e6a8df12fdfc44a90a24b677a6d04a80b91f"
 
 [[projects]]
+  digest = "1:ffe9824d294da03b391f44e1ae8281281b4afc1bdaa9588c9097785e3af10cec"
+  name = "github.com/davecgh/go-spew"
+  packages = ["spew"]
+  pruneopts = "UT"
+  revision = "8991bc29aa16c548c550c7ff78260e27b9ab7c73"
+  version = "v1.1.1"
+
+[[projects]]
   digest = "1:865079840386857c809b72ce300be7580cb50d3d3129ce11bf9aa6ca2bc1934a"
   name = "github.com/fatih/color"
   packages = ["."]
@@ -133,6 +141,14 @@
   version = "v1.2.0"
 
 [[projects]]
+  digest = "1:0028cb19b2e4c3112225cd871870f2d9cf49b9b4276531f03438a88e94be86fe"
+  name = "github.com/pmezard/go-difflib"
+  packages = ["difflib"]
+  pruneopts = "UT"
+  revision = "792786c7400a136282c1664665ae0a8db921c6c2"
+  version = "v1.0.0"
+
+[[projects]]
   digest = "1:37ace7f35375adec11634126944bdc45a673415e2fcc07382d03b75ec76ea94c"
   name = "github.com/spf13/afero"
   packages = [
@@ -182,6 +198,14 @@
   pruneopts = "UT"
   revision = "b5e8006cbee93ec955a89ab31e0e3ce3204f3736"
   version = "v1.0.2"
+
+[[projects]]
+  digest = "1:18752d0b95816a1b777505a97f71c7467a8445b8ffb55631a7bf779f6ba4fa83"
+  name = "github.com/stretchr/testify"
+  packages = ["assert"]
+  pruneopts = "UT"
+  revision = "f35b8ab0b5a2cef36673838d662e249dd9c94686"
+  version = "v1.2.2"
 
 [[projects]]
   digest = "1:9f341f0324bc8a2ab7bb1a7b6365c98e6849a2a1ceae4b448e19ee1f1f7f522f"
@@ -248,6 +272,7 @@
     "github.com/mattn/go-sqlite3",
     "github.com/spf13/cobra",
     "github.com/spf13/viper",
+    "github.com/stretchr/testify/assert",
     "github.com/tj/go-progress",
     "github.com/tj/go/term",
     "github.com/wtolson/go-taglib",

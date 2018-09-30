@@ -55,7 +55,7 @@ func (task *ServeTask) Execute() error {
 	allowedHeaders := handlers.AllowedHeaders([]string{"content-type"})
 
 	listenAddress := fmt.Sprintf(":%d", task.port)
-	fmt.Printf("MP3DB is waiting for search-requests on port %d\n", task.port)
+	log.Printf("MP3DB is waiting for search-requests on port %d\n", task.port)
 
 	return http.ListenAndServe(listenAddress, handlers.CORS(allowedOrigins, allowedMethods, allowedHeaders)(router))
 }
