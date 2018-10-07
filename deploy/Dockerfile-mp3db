@@ -1,9 +1,11 @@
-FROM golang:1.10-alpine as build
+FROM golang:1.11.1-alpine as build
 
-RUN apk add --no-cache gcc musl-dev taglib-dev
+RUN apk add --no-cache gcc musl-dev taglib-dev git
 
-COPY ./mp3db /go/src/github.com/janbaer/mp3db
-WORKDIR /go/src/github.com/janbaer/mp3db
+RUN mkdir /src
+
+COPY ./mp3db /src
+WORKDIR /src
 
 RUN go build -o mp3db main.go
 
@@ -15,7 +17,7 @@ RUN apk add --no-cache ca-certificates taglib
 
 RUN mkdir /app
 
-COPY --from=build /go/src/github.com/janbaer/mp3db/mp3db /app
+COPY --from=build /src/mp3db /app
 
 ADD mp3db-config.yml /app/
 

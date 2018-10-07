@@ -1,7 +1,6 @@
-install:
-	@go get -d -u github.com/golang/dep
-	@dep ensure
-.PHONY: install
+build:
+	@go build -o mp3db main.go
+.PHONY: build
 
 run:
 	@go run main.go serve

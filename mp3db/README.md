@@ -30,23 +30,33 @@ The following commands are supported
 
 ## Dependency management
 
-This project is using **dep** fro the dependency management. To learn more about the tool, visit
-[https://golang.github.io/dep/].
+Since version 1.11 of Go it's no longer necessary to put your go code strictly into a subfolder of
+the GOPATH folder. Because of the new module system, it's now possible to have the code somewhere
+else.
 
-At first you've to install **dep**. You can do this with *pacman* or just install from the source
-with `go get -d -u github.com/golang/dep`.
+Everything around the new Golang module system is described
+[here](https://github.com/golang/go/wiki/Modules).
 
-To add a new dependency manually, you have to enter 
+But to summarize it, all you have todo is to delete any file of a previously used dependency
+management system and as well also the vendor folder. After it you just have to enter
 
 ```
-dep ensure -add github.com/foo/bar github.com/baz/quux
+go mod init github.com/janbaer/mp3db
 ```
 
-In case you forgot to add a dependency before you used it, you can just execute `dep ensure`
-afterwards. This will download the dependency to the vendor folder and update the **Gopkg.lock**
+This will create a **go.mod** file, where all the dependencies will be saved.
 
-In case you don't want to checkin the *vendor* folder, you also need to enter `dep ensure` to download
-all packages to the *vendor*, that will be created automatically from dep.
+Now just enter **go build** and Golang will automatically all the dependencies it found from your
+imports. In case you want to update a dependency afterward to us a newer version, just enter `go get
+-u` and it'll update the **go.mod** file. To install a specific version, you just have to the the
+specific version at the end of your command.
+
+```
+go get github.com/gorilla/mux@v1.6.2
+```
+
+Just for to case you still want to save your external dependencies as part of your source code
+within a vendor folder, you have to enter `go mod vendor`
 
 ## External dependencies
 
