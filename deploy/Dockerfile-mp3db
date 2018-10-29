@@ -1,11 +1,16 @@
 FROM golang:1.11.1-alpine as build
 
-RUN apk add --no-cache gcc musl-dev taglib-dev git
+RUN apk add --no-cache gcc musl-dev taglib-dev ca-certificates git
 
 RUN mkdir /src
 
-COPY ./mp3db /src
 WORKDIR /src
+
+# Copy only go.mod and go.sum and than download the dependencies so that they will be cached
+COPY ./mp3db/go.mod ./mp3db/go.sum ./
+RUN go mod download
+
+COPY ./mp3db .
 
 RUN go build -o mp3db main.go
 
