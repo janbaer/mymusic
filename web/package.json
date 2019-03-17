@@ -32,7 +32,7 @@
     ],
     "plugins": [
       "inline-react-svg",
-      "transform-object-rest-spread"
+      "@babel/plugin-proposal-object-rest-spread"
     ]
   },
   "eslintConfig": {
@@ -64,6 +64,11 @@
     },
     "globals": {
       "fetch": false
+    },
+    "settings": {
+      "react": {
+        "version": "latest"
+      }
     }
   },
   "eslintIgnore": [
@@ -89,9 +94,11 @@
     "babel-minify": "0.5.0",
     "babel-plugin-inline-react-svg": "1.0.1",
     "babel-plugin-module-resolver": "3.2.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-polyfill": "6.26.0",
     "babel-preset-env": "1.7.0",
     "babel-preset-preact": "git://github.com/tomasdev/babel-preset-preact#patch-1",
+    "bulma": "0.7.1",
     "eslint": "5.15.1",
     "eslint-config-standard": "12.0.0",
     "eslint-config-standard-jsx": "6.0.2",
@@ -106,7 +113,6 @@
     "jest": "24.5.0",
     "less": "3.9.0",
     "lint-staged": "8.1.5",
-    "parcel-bundler": "1.12.2",
-    "bulma": "0.7.1"
+    "parcel-bundler": "1.12.2"
   }
 }
