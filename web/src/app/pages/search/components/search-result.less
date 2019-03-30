@@ -2,6 +2,11 @@
   width: 100%;
   & > tfoot {
     display: table-footer-group;
+    & > tr {
+      & > td {
+        text-align: -webkit-center;
+      }
+    }
   }
 
   & td {
@@ -35,9 +40,7 @@
 }
 
 .SearchResult-paginator {
-  margin-left: 30px;
-  margin-right: 30px;
-  justify-content: space-evenly;
+  max-width: 600px;
 }
 
 @keyframes rotating {
@@ -48,5 +51,17 @@
   to {
     transform: rotate(360deg);
     fill: red;
+  }
+}
+
+.pagination-link {
+  padding-left: initial;
+  padding-right: initial;
+  &.is-current {
+    background: none;
+    border: none;
+    & > .pagination-link {
+      background-color: aquamarine;
+    }
   }
 }
