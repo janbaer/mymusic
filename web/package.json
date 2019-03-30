@@ -83,12 +83,12 @@
   "dependencies": {
     "classnames": "2.2.6",
     "preact": "10.0.0-alpha.2",
-    "react-paginate": "5.2.4"
+    "react-paginate": "6.3.0"
   },
   "devDependencies": {
-    "@babel/core": "7.3.4",
-    "@babel/plugin-proposal-object-rest-spread": "7.3.4",
-    "@babel/preset-env": "7.3.4",
+    "@babel/core": "7.4.0",
+    "@babel/plugin-proposal-object-rest-spread": "7.4.0",
+    "@babel/preset-env": "7.4.2",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "10.0.1",
     "babel-minify": "0.5.0",
@@ -98,13 +98,13 @@
     "babel-polyfill": "6.26.0",
     "babel-preset-env": "1.7.0",
     "babel-preset-preact": "git://github.com/tomasdev/babel-preset-preact#patch-1",
-    "bulma": "0.7.1",
-    "eslint": "5.15.1",
+    "bulma": "0.7.4",
+    "eslint": "5.16.0",
     "eslint-config-standard": "12.0.0",
     "eslint-config-standard-jsx": "6.0.2",
     "eslint-config-standard-preact": "1.1.6",
     "eslint-plugin-import": "2.16.0",
-    "eslint-plugin-jest": "22.3.2",
+    "eslint-plugin-jest": "22.4.1",
     "eslint-plugin-node": "8.0.1",
     "eslint-plugin-promise": "4.0.1",
     "eslint-plugin-react": "7.12.4",
@@ -113,6 +113,6 @@
     "jest": "24.5.0",
     "less": "3.9.0",
     "lint-staged": "8.1.5",
-    "parcel-bundler": "1.12.2"
+    "parcel-bundler": "1.12.3"
   }
 }
