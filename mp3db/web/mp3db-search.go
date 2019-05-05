@@ -1,6 +1,7 @@
 package web
 
 import (
+	"crypto/tls"
 	"encoding/json"
 	"fmt"
 	"net/http"
@@ -8,6 +9,10 @@ import (
 
 	"github.com/janbaer/mp3db/model"
 )
+
+func init() {
+	http.DefaultTransport.(*http.Transport).TLSClientConfig = &tls.Config{InsecureSkipVerify: true}
+}
 
 // MP3DbSearch - defines the interface to search for
 type MP3DbSearch interface {
