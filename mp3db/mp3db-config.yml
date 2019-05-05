@@ -3,3 +3,5 @@ version: '1.0'
 database: ./data/mp3.db
 importDir: /media/music
 port: 8082
+
+mp3db-server: http://localhost:8082

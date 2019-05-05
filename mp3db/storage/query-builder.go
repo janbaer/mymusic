@@ -47,6 +47,13 @@ func BuildSearchQuery(searchTerm string, searchOptions model.SearchOptions) (str
 	return sb.String(), values
 }
 
+// BuildSearchQueryByArtistAndTitle - Creates a search query to search by the given artist and title
+func BuildSearchQueryByArtistAndTitle(artist string, title string) (string, []string) {
+	searchQuery := "Artist=? AND Title=?"
+	values := []string{artist, title}
+	return searchQuery, values
+}
+
 func parseSearchTerm(searchTerm string) (string, []string) {
 	var sb strings.Builder
 	var values []string

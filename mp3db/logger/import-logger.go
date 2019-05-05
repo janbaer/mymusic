@@ -8,9 +8,9 @@ import (
 	"github.com/janbaer/mp3db/model"
 )
 
-// ImportLogWriter - defines function to write to importstats to a log file
+// ImportLogWriter - defines function to log to Importstats
 type ImportLogWriter interface {
-	WriteLog(importState *model.ImportStats) error
+	Log(importStats *model.ImportStats) error
 }
 
 // ImportLogLogger - implements the interface ImportLogWriter
@@ -23,8 +23,8 @@ func NewImportLogLogger(logDirPath string) *ImportLogLogger {
 	return &ImportLogLogger{LogDirPath: logDirPath}
 }
 
-// WriteLog - Creates a logfile with stats about the last import
-func (logger ImportLogLogger) WriteLog(importStats *model.ImportStats) error {
+// Log - Creates a logfile with stats about the last import
+func (logger ImportLogLogger) Log(importStats *model.ImportStats) error {
 	importLogFilepath := path.Join(logger.LogDirPath, "import.log")
 	os.Remove(importLogFilepath)
 

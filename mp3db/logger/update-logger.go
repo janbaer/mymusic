@@ -10,7 +10,7 @@ import (
 
 // UpdateLogWriter - defines function to write the updatestats to a log file
 type UpdateLogWriter interface {
-	WriteLog(importState *model.UpdateStats) error
+	Log(importState *model.UpdateStats) error
 }
 
 // UpdateLogLogger - implements the interface UpdateLogWriter
@@ -23,8 +23,8 @@ func NewUpdateLogLogger(logDirPath string) *UpdateLogLogger {
 	return &UpdateLogLogger{LogDirPath: logDirPath}
 }
 
-// WriteLog - Creates a logfile with stats about the last update
-func (logger UpdateLogLogger) WriteLog(updateStats *model.UpdateStats) error {
+// Log - Creates a logfile with stats about the last update
+func (logger UpdateLogLogger) Log(updateStats *model.UpdateStats) error {
 	updateLogFilepath := path.Join(logger.LogDirPath, "update.log")
 	os.Remove(updateLogFilepath)
 

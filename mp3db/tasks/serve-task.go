@@ -61,12 +61,15 @@ func (task *ServeTask) Execute() error {
 }
 
 func (task *ServeTask) handleGetSongs(w http.ResponseWriter, r *http.Request) {
-	searchTerm, searchOptions := getQueryParams(r.URL)
-	searchQuery, values := storage.BuildSearchQuery(searchTerm, *searchOptions)
+	searchTerm, artist, title, searchOptions := getQueryParams(r.URL)
 
 	var songs *[]model.Song
 
 	if len(searchTerm) > 0 {
+		searchQuery, values := storage.BuildSearchQuery(searchTerm, *searchOptions)
+		songs, _ = task.storage.QuerySongs(searchQuery, values)
+	} else if len(artist) > 0 && len(title) > 0 {
+		searchQuery, values := storage.BuildSearchQueryByArtistAndTitle(artist, title)
 		songs, _ = task.storage.QuerySongs(searchQuery, values)
 	} else {
 		songs, _ = task.storage.QueryAll()
@@ -175,10 +178,12 @@ func (task *ServeTask) handleStreamSong(w http.ResponseWriter, r *http.Request) 
 	http.ServeContent(w, r, fileName, time.Time{}, file)
 }
 
-func getQueryParams(requestURL *url.URL) (string, *model.SearchOptions) {
+func getQueryParams(requestURL *url.URL) (searchTerm string, artist string, title string, searchOptions *model.SearchOptions) {
 	query := requestURL.Query()
 
-	if searchTerms, exists := query["q"]; exists {
+	searchTerm = query.Get("q")
+
+	if len(searchTerm) > 0 {
 		_, searchArtist := query["artist"]
 		_, searchAlbum := query["album"]
 		_, searchTitle := query["title"]
@@ -189,8 +194,11 @@ func getQueryParams(requestURL *url.URL) (string, *model.SearchOptions) {
 			searchTitle = true
 		}
 
-		return searchTerms[0], model.NewSearchOptions(searchArtist, searchTitle, searchAlbum)
+		searchOptions = model.NewSearchOptions(searchArtist, searchAlbum, searchTitle)
+	} else {
+		artist = query.Get("artist")
+		title = query.Get("title")
 	}
 
-	return "", model.NewSearchOptions(true, true, true)
+	return
 }
