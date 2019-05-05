@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/janbaer/mp3db/constants"
 	"github.com/janbaer/mp3db/files"
@@ -54,15 +55,19 @@ func initConfig() {
 		viper.SetConfigFile(cfgFile)
 	} else {
 		viper.AddConfigPath(".")
+		viper.AddConfigPath("$HOME/.config/mp3db")
 		viper.SetConfigName("mp3db-config")
 	}
 
 	viper.AutomaticEnv() // read in environment variables that match
 
 	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
+	if err := viper.ReadInConfig(); err != nil {
+		fmt.Printf("Unexpected error while reading config file %s: %v", viper.ConfigFileUsed(), err)
+		os.Exit(1)
 	}
+
+	fmt.Println("Using config-file:", viper.ConfigFileUsed())
 
 	dbPath := viper.GetString("database")
 	if len(dbPath) == 0 {

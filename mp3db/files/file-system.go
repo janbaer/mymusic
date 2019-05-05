@@ -70,7 +70,7 @@ func (fileSystem FileSystem) DeleteFile(filePath string) error {
 
 func configureAndStartSpinner(rootDir string) *spinner.Spinner {
 	s := spinner.New(spinner.CharSets[37], 100*time.Millisecond)
-	s.Suffix = fmt.Sprintf(" Start with importing %s, please wait... ", rootDir)
+	s.Suffix = fmt.Sprintf(" Start with reading %s, please wait... ", rootDir)
 	s.Color("red")
 	s.Start()
 	return s
