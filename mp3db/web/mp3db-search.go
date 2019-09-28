@@ -31,8 +31,9 @@ func NewMP3DbSearcher(mp3dbServerAddress string) *MP3DbSearcher {
 
 // Search - Searches if the given song exists in the MP3 database
 func (mp3DbSearcher MP3DbSearcher) Search(song *model.Song) (bool, error) {
-	query := fmt.Sprintf("artist=%s&title=%s", url.PathEscape(song.Artist), url.PathEscape(song.Title))
-	response, err := http.Get(fmt.Sprintf("%s/songs?%s", mp3DbSearcher.MP3DbServerAddress, query))
+	query := fmt.Sprintf("artist=%s&title=%s", url.QueryEscape(song.Artist), url.QueryEscape(song.Title))
+	requestURL := fmt.Sprintf("%s/songs?%s", mp3DbSearcher.MP3DbServerAddress, query)
+	response, err := http.Get(requestURL)
 	if err != nil {
 		return false, err
 	}
