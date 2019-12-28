@@ -16,3 +16,5 @@ require (
 	github.com/tj/go-progress v0.0.0-20180508172012-fadc638a53dd
 	github.com/wtolson/go-taglib v0.0.0-20180718000046-586eb63c2628
 )
+
+go 1.13
