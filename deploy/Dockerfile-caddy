@@ -12,17 +12,11 @@ RUN curl "https://caddyserver.com/download/linux/amd64?plugins=http.cors,http.mi
 # Remove build devs
 RUN apk del devs
 
-# Copy over a default Caddyfile
-COPY ./Caddyfile /etc/Caddyfile
-
-#USER caddy
-
 ENTRYPOINT ["/sbin/tini"]
 
 RUN mkdir /app /app/public
 
 ADD ./public /app/public/
-ADD ./certificates /app/certificates
 
 WORKDIR /app
 

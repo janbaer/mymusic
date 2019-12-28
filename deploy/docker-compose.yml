@@ -11,6 +11,8 @@ services:
       - 8081:8081
     volumes:
       - "${PWD}/log:/var/log"
+      - "${PWD}/certificates:/app/certificates"
+      - "${PWD}/Caddyfile:/etc/Caddyfile"
 
   mp3db:
     build:
