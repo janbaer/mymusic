@@ -4,7 +4,7 @@
 
   gzip
 
-  tls /app/certificates/jabasoft-ds.crt /app/certificates/jabasoft-ds.key
+  tls off
 
   proxy /api mp3db:8082 {
     without /api
