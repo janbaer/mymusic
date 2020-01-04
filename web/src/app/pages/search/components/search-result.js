@@ -79,9 +79,11 @@ export default class SearchResult extends Component {
   renderSong(song) {
     return (
       <tr>
-        <td>
-          { this.renderDeleteButton(song.id) }
-          { this.renderEditButton(song) }
+        <td class="SearchResult-actionButtonsColumn">
+          <div>
+            { this.renderDeleteButton(song.id) }
+            { this.renderEditButton(song) }
+          </div>
         </td>
         <td>{ song.artist }</td>
         <td>

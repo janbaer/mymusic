@@ -2,7 +2,7 @@ import { h } from 'preact';
 
 const PageFooter = () => (
   <div class="content">
-    <p><strong>MyMusic</strong> - Copyright 2018 by Jan Baer</p>
+    <p><strong>MyMusic</strong> - Copyright { new Date().getFullYear() } by Jan Baer</p>
   </div>
 );
 
