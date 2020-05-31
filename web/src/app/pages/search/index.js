@@ -15,7 +15,17 @@ export default class SearchPage extends Component {
     };
   }
 
-  async startSearch(searchTerm, searchField) {
+  componentDidMount() {
+    if (window.location.search) {
+      const search = window.decodeURIComponent(window.location.search);
+      if (search.startsWith('?q=')) {
+        this.startSearch(search.substr(3));
+      }
+    }
+  }
+
+  async startSearch(searchTerm, searchField = '') {
+    console.log('startSearch', searchTerm);
     await this.searchResultComponent.resetPaginator();
 
     this.setState({ isBusy: true }, async() => {
